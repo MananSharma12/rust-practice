@@ -1,24 +1,37 @@
-use std::fmt::format;
+use rand::prelude::*;
 
 #[derive(Debug)]
 struct Deck {
     cards: Vec<String>,
 }
 
-fn main() {
-    let suits = ["Hearts", "Spades", "Diamonds", "Clubs"];
-    let values = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"];
+impl Deck {
+    fn new() -> Self {
+        let suits = ["Hearts", "Spades", "Diamonds", "Clubs"];
+        let values = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"];
 
-    let mut cards = vec![];
+        let mut cards = vec![];
 
-    for suit in &suits {
-        for value in &values {
-            let card = format!("{value} of {suit}");
-            cards.push(card);
+        for suit in suits {
+            for value in values {
+                let card = format!("{value} of {suit}");
+                cards.push(card);
+            }
         }
+
+        Deck { cards }
     }
 
-    let deck: Deck = Deck { cards: vec![] };
+    fn shuffle(&mut self) {
+        let mut rng = rand::rng();
+        self.cards.shuffle(&mut rng);
+    }
+}
 
-    println!("Your deck is: {:?}", deck);
+fn main() {
+    let mut deck = Deck::new();
+
+    deck.shuffle();
+
+    println!("Your deck is: {:#?}", deck);
 }
